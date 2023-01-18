@@ -1,0 +1,4 @@
+pyqt5
+PIL
+cv2
+numpy
