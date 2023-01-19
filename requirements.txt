@@ -1,4 +1,4 @@
-pyqt5
+PyQt5
 Pillow
-cv2
-numpy
+opencv-python
+Numpy
