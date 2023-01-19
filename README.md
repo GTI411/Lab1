@@ -1,5 +1,7 @@
 # Lab1
 
+Rapport: https://docs.google.com/document/d/1oMppS3wBUEh3OS3AVHaeroz6R7K4y8iWasq-QhqSRwg/edit?usp=share_link
+
 ### Installation des dépendances
 
 `pip install -r requirements.txt`
