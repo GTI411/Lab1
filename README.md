@@ -20,3 +20,11 @@ https://ena.etsmtl.ca/pluginfile.php/1653136/course/section/235847/manuel.docx
 NumPy
 
 https://numpy.org/doc/1.23/numpy-user.pdf
+
+Pillow
+
+https://pillow.readthedocs.io/en/stable/handbook/overview.html
+
+PyQT5
+
+https://www.riverbankcomputing.com/static/Docs/PyQt5/index.html
