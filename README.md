@@ -4,5 +4,8 @@
 
 `pip install -r requirements.txt`
 
-Voir ce document pour plus de détails:
+### Documentation importante à lire
 https://ena.etsmtl.ca/pluginfile.php/1653136/course/section/235847/manuel.docx
+OpenCV: https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html
+QT Designer: https://doc.qt.io/qt-6/qtdesigner-manual.html / https://ena.etsmtl.ca/pluginfile.php/1653136/course/section/235847/manuel.docx
+NumPy: https://numpy.org/doc/1.23/numpy-user.pdf
