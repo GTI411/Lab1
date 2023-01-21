@@ -12,11 +12,13 @@ from PyQt5.QtCore import pyqtSignal, QThread
 
 
 class Ui_Lab1_Interpolation(QThread):
+    # Lines Added
     R = 0
     G = 0
     B = 0
     okClicked = False
     my_signal = pyqtSignal(int, int, int, bool)  # signal OK ou Cancel
+    # ^ Lines Added
 
     def setupUi(self, Lab1_Interpolation, current_r, current_g, current_b):
         Lab1_Interpolation.setObjectName("Lab1_Interpolation")
@@ -126,14 +128,18 @@ class Ui_Lab1_Interpolation(QThread):
         self.statusbar.setObjectName("statusbar")
         Lab1_Interpolation.setStatusBar(self.statusbar)
 
+        # Lines Added
         self.OK_Button.clicked.connect(lambda: self.Button_clicked(self.OK_Button))
         self.Cancel_Button.clicked.connect(lambda: self.Button_clicked(self.Cancel_Button))
+        # ^ Lines Added
 
         self.retranslateUi(Lab1_Interpolation)
         self.tabWidget.setCurrentIndex(0)
         self.R_Slider.valueChanged['int'].connect(self.label_4.setNum)
         self.G_Slider.valueChanged['int'].connect(self.label_5.setNum)
         self.B_Slider.valueChanged['int'].connect(self.label_6.setNum)
+
+        # Lines Added
         self.R_Slider.valueChanged['int'].connect(self.slider_R_ValueChanged)
         self.G_Slider.valueChanged['int'].connect(self.slider_G_ValueChanged)
         self.B_Slider.valueChanged['int'].connect(self.slider_B_ValueChanged)
@@ -144,6 +150,7 @@ class Ui_Lab1_Interpolation(QThread):
         self.slider_R_ValueChanged()
         self.slider_B_ValueChanged()
         self.slider_G_ValueChanged()
+        # ^ Lines Added
 
         QtCore.QMetaObject.connectSlotsByName(Lab1_Interpolation)
 

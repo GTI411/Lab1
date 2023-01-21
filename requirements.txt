@@ -1,4 +1,5 @@
-PyQt5
+PyQt5==5.15.7
 Pillow
 opencv-python
 Numpy
+pyqt5-tools
