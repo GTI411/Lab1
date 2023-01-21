@@ -1,4 +1,4 @@
-# Lab1
+# Lab 1
 
 Rapport: https://docs.google.com/document/d/1oMppS3wBUEh3OS3AVHaeroz6R7K4y8iWasq-QhqSRwg/edit?usp=share_link
 
