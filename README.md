@@ -8,6 +8,8 @@ Rapport: https://docs.google.com/document/d/1oMppS3wBUEh3OS3AVHaeroz6R7K4y8iWasq
 
 ### Documentation importante à lire
 
+https://ena.etsmtl.ca/mod/assign/view.php?id=1227112
+
 
 OpenCV
 
