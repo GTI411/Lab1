@@ -13,6 +13,7 @@ Configurer un environnement venv
 https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html#env-requirements
 
 Énoncé
+
 https://ena.etsmtl.ca/mod/assign/view.php?id=1227112
 
 
