@@ -1,5 +1,9 @@
 # Lab 1
 
+Énoncé
+
+https://ena.etsmtl.ca/mod/assign/view.php?id=1227112
+
 Rapport
 
 https://docs.google.com/document/d/1oMppS3wBUEh3OS3AVHaeroz6R7K4y8iWasq-QhqSRwg/edit?usp=share_link
@@ -13,11 +17,6 @@ https://www.jetbrains.com/help/pycharm/creating-virtual-environment.html#env-req
 `pip install -r requirements.txt`
 
 ### Documentation importante à lire
-
-Énoncé
-
-https://ena.etsmtl.ca/mod/assign/view.php?id=1227112
-
 
 OpenCV
 
