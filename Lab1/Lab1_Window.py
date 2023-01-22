@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import self as self
 # Form implementation generated from reading ui file 'Lab1_Window.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
@@ -343,19 +343,33 @@ class Ui_Lab1_Window(object):
             self.R = r
             self.G = g
             self.B = b
-            self.updateRGBtoCMYK()
+            self.RGB_2_CMYK()
             if self.whichForm:
                 addRectangle(self)
             else:
                 addDisc(self)
         self.window.close()
 
-    def updateRGBtoCMYK(self):
+    def RGB_2_CMYK(self):
+        # Convert RGB to values between 0 and 1
+        R2 = self.R / 255
+        G2 = self.G / 255
+        B2 = self.B / 255
+
         if self.R == 0 and self.G == 0 and self.B == 0:
             self.C = 0
             self.M = 0
             self.Y = 0
             self.K = 100
+        elif self.R == self.G == self.B:
+            self.K = 1 - R2
+        else:
+            self.K = 1 - max(R2, G2, B2)
+
+            self.C = round(float(1 - R2 - self.K) / float(1 - self.K) * 100)
+            self.M = round(float(1 - G2 - self.K) / float(1 - self.K) * 100)
+            self.Y = round(float(1 - B2 - self.K) / float(1 - self.K) * 100)
+            self.K = round(self.K * 100)
 
     def changeFormColorCMYK(self, c, m, y, k, boolbutton):
         if boolbutton:
@@ -363,19 +377,31 @@ class Ui_Lab1_Window(object):
             self.M = m
             self.Y = y
             self.K = k
-
+            self.updateCMYKtoRGB()
             if self.whichForm:
                 addRectangle(self)
             else:
                 addDisc(self)
         self.window.close()
 
+    def updateCMYKtoRGB(self):
+        # Convert CMYK to values between 0 and 1
+        C2 = self.C / 100
+        M2 = self.M / 100
+        Y2 = self.Y / 100
+        K2 = self.K / 100
+
+        # Calculs
+        self.R = round(float(255 * float(1 - C2) * float(1 - K2)))
+        self.G = round(float(255 * float(1 - M2) * float(1 - K2)))
+        self.B = round(float(255 * float(1 - Y2) * float(1 - K2)))
+
     def onChange(self, i):  # changed!
-        if (self.tabWidget.currentIndex() == 1):
+        if self.tabWidget.currentIndex() == 1:
             self.actionDis.setDisabled(True)
             self.actionRectangle.setDisabled(True)
             self.actionImage.setDisabled(False)
-        if (self.tabWidget.currentIndex() == 0):
+        if self.tabWidget.currentIndex() == 0:
             self.actionDis.setDisabled(False)
             self.actionRectangle.setDisabled(False)
             self.actionImage.setDisabled(True)

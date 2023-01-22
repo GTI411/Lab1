@@ -12,7 +12,7 @@ from PyQt5.QtCore import pyqtSignal, QThread
 
 
 class Ui_Lab1_Interpolation(QThread):
-    # Lines Added
+
     R = 255
     G = 0
     B = 0
@@ -25,7 +25,6 @@ class Ui_Lab1_Interpolation(QThread):
     okClicked = False
     my_signal = pyqtSignal(int, int, int, bool)  # signal OK ou Cancel
     my_signal_2 = pyqtSignal(int, int, int, int, bool)  # signal OK ou Cancel
-    # ^ Lines Added
 
     def setupUi(self, Lab1_Interpolation, current_r, current_g, current_b, current_c, current_m, current_y, current_k):
         Lab1_Interpolation.setObjectName("Lab1_Interpolation")
@@ -390,7 +389,6 @@ class Ui_Lab1_Interpolation(QThread):
         self.G_Slider.valueChanged['int'].connect(self.label_5.setNum)
         self.B_Slider.valueChanged['int'].connect(self.label_6.setNum)
 
-
         self.R_Slider.valueChanged['int'].connect(self.slider_R_ValueChanged)
         self.G_Slider.valueChanged['int'].connect(self.slider_G_ValueChanged)
         self.B_Slider.valueChanged['int'].connect(self.slider_B_ValueChanged)
@@ -419,7 +417,7 @@ class Ui_Lab1_Interpolation(QThread):
     def slider_R_ValueChanged(self):
         # update green
         # update blue
-        background_b  = np.zeros((22, 267, 4), dtype="uint8")
+        background_b = np.zeros((22, 267, 4), dtype="uint8")
         background_g = np.zeros((22, 267, 4), dtype="uint8")
         width = 267
         height = 22
