@@ -7,4 +7,5 @@ Pour créer les curseurs d'interpolation entre les différents espaces, il suffi
 pyuic5 -x fichier.ui -o fichier.py
 ```
 
+Pour implémenter les nouveaux curseurs dans l'application, comparer le fichier original de la fenêtre d'interpolation avec le nouveau fichier avec https://www.diffchecker.com/text-compare/, puis ajouter les nouvelles lignes dans Lab1\Lab1_Interpolation.py.
 
