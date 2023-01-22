@@ -93,9 +93,9 @@ def closeWindow(self):
 
 
 class Ui_Lab1_Window(object):
-    R = 255
+    R = 0
     G = 0
-    B = 0
+    B = 20
 
     C = 0
     M = 0
@@ -108,7 +108,7 @@ class Ui_Lab1_Window(object):
         self.ui = Ui_Lab1_Interpolation()
         self.ui.my_signal.connect(self.changeFormColor)  # récupérer les valeurs R G B de l'autre fenêtre
         self.ui.my_signal_2.connect(self.changeFormColorCMYK)  # récupérer les valeurs C M Y K de l'autre fenêtre
-        self.ui.setupUi(self.window, self.R, self.G, self.B)
+        self.ui.setupUi(self.window, self.R, self.G, self.B, self.C, self.M, self.Y, self.K)
         self.window.show()
 
     def setupUi(self, Lab1_Window):
@@ -343,13 +343,21 @@ class Ui_Lab1_Window(object):
             self.R = r
             self.G = g
             self.B = b
+            self.updateRGBtoCMYK()
             if self.whichForm:
                 addRectangle(self)
             else:
                 addDisc(self)
         self.window.close()
 
-    def changeFormColorCMYK(self, c, y, m, k, boolbutton):
+    def updateRGBtoCMYK(self):
+        if self.R == 0 and self.G == 0 and self.B == 0:
+            self.C = 0
+            self.M = 0
+            self.Y = 0
+            self.K = 100
+
+    def changeFormColorCMYK(self, c, m, y, k, boolbutton):
         if boolbutton:
             self.C = c
             self.M = m
@@ -361,6 +369,7 @@ class Ui_Lab1_Window(object):
             else:
                 addDisc(self)
         self.window.close()
+
     def onChange(self, i):  # changed!
         if (self.tabWidget.currentIndex() == 1):
             self.actionDis.setDisabled(True)

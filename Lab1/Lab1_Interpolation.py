@@ -27,7 +27,7 @@ class Ui_Lab1_Interpolation(QThread):
     my_signal_2 = pyqtSignal(int, int, int, int, bool)  # signal OK ou Cancel
     # ^ Lines Added
 
-    def setupUi(self, Lab1_Interpolation, current_r, current_g, current_b, current_c, current_m, current_y, current_k ):
+    def setupUi(self, Lab1_Interpolation, current_r, current_g, current_b, current_c, current_m, current_y, current_k):
         Lab1_Interpolation.setObjectName("Lab1_Interpolation")
         Lab1_Interpolation.resize(350, 220)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -123,7 +123,7 @@ class Ui_Lab1_Interpolation(QThread):
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_5.addWidget(self.label_7)
         self.C_Slider = QtWidgets.QSlider(self.layoutWidget)
-        self.C_Slider.setStyleSheet("selection-background-color: rgb(85, 255, 0);")
+        self.C_Slider.setStyleSheet("QSlider {background-image: url(Sliders/c_slider_background.png);}")
         self.C_Slider.setMaximum(100)
         self.C_Slider.setOrientation(QtCore.Qt.Horizontal)
         self.C_Slider.setObjectName("C_Slider")
@@ -147,7 +147,7 @@ class Ui_Lab1_Interpolation(QThread):
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_6.addWidget(self.label_9)
         self.M_Slider = QtWidgets.QSlider(self.layoutWidget_2)
-        self.M_Slider.setStyleSheet("selection-background-color: rgb(85, 255, 0);")
+        self.M_Slider.setStyleSheet("QSlider {background-image: url(Sliders/m_slider_background.png);}")
         self.M_Slider.setMaximum(100)
         self.M_Slider.setOrientation(QtCore.Qt.Horizontal)
         self.M_Slider.setObjectName("M_Slider")
@@ -171,7 +171,7 @@ class Ui_Lab1_Interpolation(QThread):
         self.label_11.setObjectName("label_11")
         self.horizontalLayout_7.addWidget(self.label_11)
         self.Y_Slider = QtWidgets.QSlider(self.layoutWidget_3)
-        self.Y_Slider.setStyleSheet("selection-background-color: rgb(85, 255, 0);")
+        self.Y_Slider.setStyleSheet("QSlider {background-image: url(Sliders/y_slider_background.png);}")
         self.Y_Slider.setMaximum(100)
         self.Y_Slider.setOrientation(QtCore.Qt.Horizontal)
         self.Y_Slider.setObjectName("Y_Slider_4")
@@ -195,7 +195,7 @@ class Ui_Lab1_Interpolation(QThread):
         self.label_13.setObjectName("label_13")
         self.horizontalLayout_8.addWidget(self.label_13)
         self.K_Slider = QtWidgets.QSlider(self.layoutWidget_4)
-        self.K_Slider.setStyleSheet("selection-background-color: rgb(85, 255, 0);")
+        self.K_Slider.setStyleSheet("QSlider {background-image: url(Sliders/k_slider_background.png);}")
         self.K_Slider.setMaximum(100)
         self.K_Slider.setOrientation(QtCore.Qt.Horizontal)
         self.K_Slider.setObjectName("K_Slider_5")
@@ -223,7 +223,7 @@ class Ui_Lab1_Interpolation(QThread):
         self.label_15.setObjectName("label_15")
         self.horizontalLayout_9.addWidget(self.label_15)
         self.H_Slider_2 = QtWidgets.QSlider(self.layoutWidget_5)
-        self.H_Slider_2.setStyleSheet("selection-background-color: rgb(85, 255, 0);")
+        self.H_Slider_2.setStyleSheet("QSlider {background-image: url(Sliders/k_slider_background.png);}")
         self.H_Slider_2.setMaximum(255)
         self.H_Slider_2.setOrientation(QtCore.Qt.Horizontal)
         self.H_Slider_2.setObjectName("H_Slider_2")
@@ -410,16 +410,16 @@ class Ui_Lab1_Interpolation(QThread):
         self.K_Slider.valueChanged['int'].connect(self.label_14.setNum)
 
         self.C_Slider.setValue(current_c)
-        self.M_Slider.setValue(current_m)
-        self.Y_Slider.setValue(current_y)
-        self.K_Slider.setValue(current_k)
+        self.C_Slider.setValue(current_m)
+        self.C_Slider.setValue(current_y)
+        self.C_Slider.setValue(current_k)
 
         QtCore.QMetaObject.connectSlotsByName(Lab1_Interpolation)
 
     def slider_R_ValueChanged(self):
         # update green
         # update blue
-        background_b = np.zeros((22, 267, 4), dtype="uint8")
+        background_b  = np.zeros((22, 267, 4), dtype="uint8")
         background_g = np.zeros((22, 267, 4), dtype="uint8")
         width = 267
         height = 22
@@ -432,10 +432,10 @@ class Ui_Lab1_Interpolation(QThread):
                 background_b[j, i] = [new_blue, self.G_Slider.value(), self.R_Slider.value(), 255]
                 background_g[j, i] = [self.B_Slider.value(), new_green, self.R_Slider.value(), 255]
 
-        cv2.imwrite('b_slider_background.jpg', background_b)
-        cv2.imwrite('g_slider_background.jpg', background_g)
-        self.G_Slider.setStyleSheet("QSlider {background-image: url(g_slider_background.jpg);}")
-        self.B_Slider.setStyleSheet("QSlider {background-image: url(b_slider_background.jpg);}")
+        cv2.imwrite('Sliders/b_slider_background.jpg', background_b)
+        cv2.imwrite('Sliders/g_slider_background.jpg', background_g)
+        self.G_Slider.setStyleSheet("QSlider {background-image: url(Sliders/g_slider_background.jpg);}")
+        self.B_Slider.setStyleSheet("QSlider {background-image: url(Sliders/b_slider_background.jpg);}")
 
     def slider_G_ValueChanged(self):
         # update red
@@ -453,10 +453,10 @@ class Ui_Lab1_Interpolation(QThread):
                 background_b[j, i] = [new_blue, self.G_Slider.value(), self.R_Slider.value(), 255]
                 background_r[j, i] = [self.B_Slider.value(), self.G_Slider.value(), new_red, 255]
 
-        cv2.imwrite('b_slider_background.jpg', background_b)
-        cv2.imwrite('r_slider_background.jpg', background_r)
-        self.R_Slider.setStyleSheet("QSlider {background-image: url(r_slider_background.jpg);}")
-        self.B_Slider.setStyleSheet("QSlider {background-image: url(b_slider_background.jpg);}")
+        cv2.imwrite('Sliders/b_slider_background.jpg', background_b)
+        cv2.imwrite('Sliders/r_slider_background.jpg', background_r)
+        self.R_Slider.setStyleSheet("QSlider {background-image: url(Sliders/r_slider_background.jpg);}")
+        self.B_Slider.setStyleSheet("QSlider {background-image: url(Sliders/b_slider_background.jpg);}")
 
     def slider_B_ValueChanged(self):
         background_g = np.zeros((22, 267, 4), dtype="uint8")
@@ -472,31 +472,10 @@ class Ui_Lab1_Interpolation(QThread):
                 background_g[j, i] = [self.B_Slider.value(), new_green, self.R_Slider.value(), 255]
                 background_r[j, i] = [self.B_Slider.value(), self.G_Slider.value(), new_red, 255]
 
-        cv2.imwrite('g_slider_background.jpg', background_g)
-        cv2.imwrite('r_slider_background.jpg', background_r)
-        self.R_Slider.setStyleSheet("QSlider {background-image: url(r_slider_background.jpg);}")
-        self.G_Slider.setStyleSheet("QSlider {background-image: url(g_slider_background.jpg);}")
-
-    def slider_C_ValueChanged(self):
-        # update green
-        # update blue
-        background_b = np.zeros((22, 267, 4), dtype="uint8")
-        background_g = np.zeros((22, 267, 4), dtype="uint8")
-        width = 267
-        height = 22
-
-        for i in range(width):
-            new_green = int((i / width) * 255)
-            new_blue = int((i / width) * 255)
-
-            for j in range(height):
-                background_b[j, i] = [new_blue, self.C_Slider.value(), self.R_Slider.value(), 255]
-                background_g[j, i] = [self.C_Slider.value(), new_green, self.R_Slider.value(), 255]
-
-        cv2.imwrite('b_slider_background.jpg', background_b)
-        cv2.imwrite('g_slider_background.jpg', background_g)
-        self.G_Slider.setStyleSheet("QSlider {background-image: url(g_slider_background.jpg);}")
-        self.B_Slider.setStyleSheet("QSlider {background-image: url(b_slider_background.jpg);}")
+        cv2.imwrite('Sliders/g_slider_background.jpg', background_g)
+        cv2.imwrite('Sliders/r_slider_background.jpg', background_r)
+        self.R_Slider.setStyleSheet("QSlider {background-image: url(Sliders/r_slider_background.jpg);}")
+        self.G_Slider.setStyleSheet("QSlider {background-image: url(Sliders/g_slider_background.jpg);}")
 
     def Button_clicked(self, b):
         if b.text() == "OK": self.okClicked = True
