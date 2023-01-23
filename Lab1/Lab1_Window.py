@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import self as self
 # Form implementation generated from reading ui file 'Lab1_Window.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
@@ -14,25 +14,27 @@ from PyQt5.QtWidgets import QFileDialog
 
 from Lab1.Lab1_Interpolation import Ui_Lab1_Interpolation
 
+
 def addDisc(self):
     # créer une image transparente comme intermédiaire juste pour l'affichage des formes
     img_height, img_width = self.label_2.height(), self.label_2.width()
     n_channels = 4
     image = np.zeros((img_height - 2, img_width - 2, n_channels), dtype="uint8")
     # paramètres du cercle
-    center_coordinates = (int(img_width/2), int(img_height/2))
-    radius = int(img_height/2) - 120 #ne doit pas dépasser min(img_height, img_width)/2
-    #valeurs initiales des couleurs R G B
-    color = (self.R, self.G, self.B, 255) #r g b alpha
-    thickness = -1  #remplir la forme géométrique par la couleur
+    center_coordinates = (int(img_width / 2), int(img_height / 2))
+    radius = int(img_height / 2) - 120  # ne doit pas dépasser min(img_height, img_width)/2
+    # valeurs initiales des couleurs R G B
+    color = (self.R, self.G, self.B, 255)  # r g b alpha
+    thickness = -1  # remplir la forme géométrique par la couleur
     cv2.circle(image, center_coordinates, radius, color, thickness)
 
     img = Image.fromarray(image, 'RGBA')
     img.save('my.png')
     pixmap = QPixmap('my.png')
     self.label_2.setPixmap(pixmap)
-    self.pushButton_9.setEnabled(True)#activer le bouton Color
+    self.pushButton_9.setEnabled(True)  # activer le bouton Color
     self.whichForm = False
+
 
 def addRectangle(self):
     # créer une image transparente comme intermédiaire juste pour l'affichage des formes
@@ -40,9 +42,10 @@ def addRectangle(self):
     n_channels = 4
     image = np.zeros((img_height - 2, img_width - 2, n_channels), dtype="uint8")
     # paramètres du rectangle
-    start_point = (int(img_width/2) - 300, int(img_height/2) - 200) #top left corner
-    end_point = (int(img_width/2) + 300, int(img_height/2) + 200) #bottom right corner, ne doit pas dépasser (img_width, img_height)
-    color = (self.R, self.G, self.B, 255) #r g b alpha
+    start_point = (int(img_width / 2) - 300, int(img_height / 2) - 200)  # top left corner
+    end_point = (int(img_width / 2) + 300,
+                 int(img_height / 2) + 200)  # bottom right corner, ne doit pas dépasser (img_width, img_height)
+    color = (self.R, self.G, self.B, 255)  # r g b alpha
     thickness = 3
     cv2.rectangle(image, start_point, end_point, color, thickness)
 
@@ -50,7 +53,7 @@ def addRectangle(self):
     img.save('my.png')
     pixmap = QPixmap('my.png')
     self.label_2.setPixmap(pixmap)
-    self.pushButton_9.setEnabled(True) # activer le bouton Color
+    self.pushButton_9.setEnabled(True)  # activer le bouton Color
     self.whichForm = True
 
 
@@ -58,15 +61,16 @@ def openImage(self):
     # read image from file dialog window
     options = QFileDialog.Options()
     options |= QFileDialog.DontUseNativeDialog
-    fileName, _ = QFileDialog.getOpenFileName(self.centralwidget, "Open Image", "", "Images (*.jpg);;Images (*.png);;All Files (*)", options=options)
+    fileName, _ = QFileDialog.getOpenFileName(self.centralwidget, "Open Image", "",
+                                              "Images (*.jpg);;Images (*.png);;All Files (*)", options=options)
     if fileName:
         print(fileName)
         src = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
-        #afficher l'image originale
+        # afficher l'image originale
         pixmap = QPixmap(fileName)
         self.label_10.setPixmap(pixmap)
         # afficher l'image R
-        red_channel = src[:, :, 2] #extract red channel
+        red_channel = src[:, :, 2]  # extract red channel
         cv2.imwrite('red_img.jpg', red_channel)
         pixmap = QPixmap('red_img.jpg')
         self.label_7.setPixmap(pixmap)
@@ -83,21 +87,31 @@ def openImage(self):
         pixmap = QPixmap('blue_img.jpg')
         self.label_9.setPixmap(pixmap)
 
+
 def closeWindow(self):
     pass
 
+
 class Ui_Lab1_Window(object):
-   R = 255
-   G = 0
-   B = 0
-   whichForm = False  # false : disc est affiché, true : rectangle est affiché
-   def openWindowInterpolation(self):
+    R = 0
+    G = 0
+    B = 20
+
+    C = 0
+    M = 0
+    Y = 0
+    K = 0
+    whichForm = False  # false : disc est affiché, true : rectangle est affiché
+
+    def openWindowInterpolation(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_Lab1_Interpolation()
-        self.ui.my_signal.connect(self.changeFormColor) #récupérer les valeurs R G B de l'autre fenêtre
-        self.ui.setupUi(self.window, self.R, self.G, self.B)
+        self.ui.my_signal.connect(self.changeFormColor)  # récupérer les valeurs R G B de l'autre fenêtre
+        self.ui.my_signal_2.connect(self.changeFormColorCMYK)  # récupérer les valeurs C M Y K de l'autre fenêtre
+        self.ui.setupUi(self.window, self.R, self.G, self.B, self.C, self.M, self.Y, self.K)
         self.window.show()
-   def setupUi(self, Lab1_Window):
+
+    def setupUi(self, Lab1_Window):
         Lab1_Window.setObjectName("Lab1_Window")
         Lab1_Window.setEnabled(True)
         Lab1_Window.setMinimumSize(QtCore.QSize(1300, 900))
@@ -308,7 +322,7 @@ class Ui_Lab1_Window(object):
         self.menubar.addAction(self.menuAdd.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
-        #valeurs initiales r, g et b pour l'affichage des formes : (255, 0, 0)
+        # valeurs initiales r, g et b pour l'affichage des formes : (255, 0, 0)
 
         self.actionDis.setDisabled(False)
         self.actionRectangle.setDisabled(False)
@@ -324,41 +338,90 @@ class Ui_Lab1_Window(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Lab1_Window)
 
-
-   def changeFormColor(self, r, g, b, boolbutton):
+    def changeFormColor(self, r, g, b, boolbutton):
         if boolbutton:
             self.R = r
             self.G = g
             self.B = b
-            if self.whichForm :
+            self.RGB_2_CMYK()
+            if self.whichForm:
                 addRectangle(self)
-            else :
+            else:
                 addDisc(self)
         self.window.close()
 
-   def onChange(self, i):  # changed!
-       if (self.tabWidget.currentIndex() == 1):
-           self.actionDis.setDisabled(True)
-           self.actionRectangle.setDisabled(True)
-           self.actionImage.setDisabled(False)
-       if (self.tabWidget.currentIndex() == 0):
-           self.actionDis.setDisabled(False)
-           self.actionRectangle.setDisabled(False)
-           self.actionImage.setDisabled(True)
+    def RGB_2_CMYK(self):
+        # Convert RGB to values between 0 and 1
+        R2 = self.R / 255
+        G2 = self.G / 255
+        B2 = self.B / 255
 
-   def retranslateUi(self, Lab1_Window):
+        if self.R == 0 and self.G == 0 and self.B == 0:
+            self.C = 0
+            self.M = 0
+            self.Y = 0
+            self.K = 100
+        elif self.R == self.G == self.B:
+            self.K = 1 - R2
+        else:
+            self.K = 1 - max(R2, G2, B2)
+
+            self.C = round(float(1 - R2 - self.K) / float(1 - self.K) * 100)
+            self.M = round(float(1 - G2 - self.K) / float(1 - self.K) * 100)
+            self.Y = round(float(1 - B2 - self.K) / float(1 - self.K) * 100)
+            self.K = round(self.K * 100)
+
+    def changeFormColorCMYK(self, c, m, y, k, boolbutton):
+        if boolbutton:
+            self.C = c
+            self.M = m
+            self.Y = y
+            self.K = k
+            self.updateCMYKtoRGB()
+            if self.whichForm:
+                addRectangle(self)
+            else:
+                addDisc(self)
+        self.window.close()
+
+    def updateCMYKtoRGB(self):
+        # Convert CMYK to values between 0 and 1
+        C2 = self.C / 100
+        M2 = self.M / 100
+        Y2 = self.Y / 100
+        K2 = self.K / 100
+
+        # Calculs
+        self.R = round(float(255 * float(1 - C2) * float(1 - K2)))
+        self.G = round(float(255 * float(1 - M2) * float(1 - K2)))
+        self.B = round(float(255 * float(1 - Y2) * float(1 - K2)))
+
+    def onChange(self, i):  # changed!
+        if self.tabWidget.currentIndex() == 1:
+            self.actionDis.setDisabled(True)
+            self.actionRectangle.setDisabled(True)
+            self.actionImage.setDisabled(False)
+        if self.tabWidget.currentIndex() == 0:
+            self.actionDis.setDisabled(False)
+            self.actionRectangle.setDisabled(False)
+            self.actionImage.setDisabled(True)
+
+    def retranslateUi(self, Lab1_Window):
         _translate = QtCore.QCoreApplication.translate
         Lab1_Window.setWindowTitle(_translate("Lab1_Window", "Lab1_Window"))
         self.label.setText(_translate("Lab1_Window", "Selected Object Color"))
         self.pushButton_9.setText(_translate("Lab1_Window", "Color"))
         self.pushButton_9.setEnabled(False)
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.partie1), _translate("Lab1_Window", "Color Interpolation"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.partie1),
+                                  _translate("Lab1_Window", "Color Interpolation"))
         self.label_4.setText(_translate("Lab1_Window", "R Image"))
         self.label_5.setText(_translate("Lab1_Window", "G Image"))
         self.label_6.setText(_translate("Lab1_Window", "B Image"))
         self.label_3.setText(_translate("Lab1_Window", "Original Image"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.partie2), _translate("Lab1_Window", "Image Decomposition"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.partie3), _translate("Lab1_Window", "Contrast and Brightness"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.partie2),
+                                  _translate("Lab1_Window", "Image Decomposition"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.partie3),
+                                  _translate("Lab1_Window", "Contrast and Brightness"))
         self.menuFile.setTitle(_translate("Lab1_Window", "File"))
         self.menuAdd.setTitle(_translate("Lab1_Window", "Add"))
         self.menuHelp.setTitle(_translate("Lab1_Window", "Help"))
@@ -368,8 +431,10 @@ class Ui_Lab1_Window(object):
         self.actionExit.setText(_translate("Lab1_Window", "Exit"))
         self.actionAbout.setText(_translate("Lab1_Window", "About"))
 
+
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Lab1_Window = QtWidgets.QMainWindow()
     ui = Ui_Lab1_Window()
