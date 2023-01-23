@@ -6,7 +6,7 @@ https://ena.etsmtl.ca/mod/assign/view.php?id=1227112
 
 Rapport
 
-https://docs.google.com/document/d/1oMppS3wBUEh3OS3AVHaeroz6R7K4y8iWasq-QhqSRwg/edit?usp=share_link
+https://docs.google.com/document/d/1tHoAvNgTbWcnh2EJVCBciwVspmH8sgfA/edit?usp=share_link&ouid=110691612148937953876&rtpof=true&sd=true
 
 Configurer un environnement venv
 
