@@ -83,6 +83,57 @@ def openImage(self):
         pixmap = QPixmap('blue_img.jpg')
         self.label_9.setPixmap(pixmap)
 
+        # start of edit ---------------------
+        # Convert to CMYK
+        cmyk_img = Image.fromarray(src).convert('CMYK')
+        cmyk_img = np.array(cmyk_img)
+
+        # afficher l'image C
+        c_channel = cmyk_img[:, :, 0]  # extract Cyan channel
+        cv2.imwrite('cyan_channel.jpg', c_channel)
+
+        # afficher l'image M
+        m_channel = cmyk_img[:, :, 1]  # extract magenta channel
+        cv2.imwrite('m_channel.jpg', m_channel)
+
+        # afficher l'image Y
+        y_channel = cmyk_img[:, :, 2]  # extract yellow channel
+        cv2.imwrite('y_channel.jpg', y_channel)
+
+        # convert to HSV
+        hsv_img = Image.fromarray(src).convert('HSV')
+        hsv_img = np.array(hsv_img)
+
+        # afficher l'image H
+        h_channel = hsv_img[:, :, 0]  # extract hue channel
+        cv2.imwrite('hue_img.jpg', h_channel)
+
+        # afficher l'image S
+        s_channel = hsv_img[:, :, 1]  # extract saturation channel
+        cv2.imwrite('saturation_img.jpg', s_channel)
+
+        # afficher l'image v
+        v_channel = hsv_img[:, :, 2]  # extract value channel
+        cv2.imwrite('value_img.jpg', v_channel)
+
+        # convert to Lab
+        lab_img = Image.fromarray(src).convert('LAB')
+        lab_img = np.array(lab_img)
+
+        # afficher l'image L
+        l_channel = lab_img[:, :, 0]  # extract lightness channel
+        cv2.imwrite('lightness_img.jpg', l_channel)
+
+        # afficher l'image R/G
+        rg_channel = lab_img[:, :, 1]  # extract Red to Green value channel
+        cv2.imwrite('red_green_img.jpg', rg_channel)
+
+        # afficher l'image B/Y
+        by_channel = lab_img[:, :, 2]  # extract blue to yellow value channel
+        cv2.imwrite('blue_yellow_img.jpg', by_channel)
+
+        # end of edit ----------
+
 def closeWindow(self):
     pass
 
