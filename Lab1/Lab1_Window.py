@@ -10,7 +10,7 @@ from PIL import Image
 from PyQt5.QtGui import QPixmap
 import cv2
 import numpy as np
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QComboBox
 
 from Lab1.Lab1_Interpolation import Ui_Lab1_Interpolation
 
@@ -83,7 +83,6 @@ def openImage(self):
         pixmap = QPixmap('blue_img.jpg')
         self.label_9.setPixmap(pixmap)
 
-        # start of edit ---------------------
         # Convert to CMYK
         cmyk_img = Image.fromarray(src).convert('CMYK')
         cmyk_img = np.array(cmyk_img)
@@ -132,7 +131,13 @@ def openImage(self):
         by_channel = lab_img[:, :, 2]  # extract blue to yellow value channel
         cv2.imwrite('blue_yellow_img.jpg', by_channel)
 
-        # end of edit ----------
+        # enable combobox
+        self.combobox.setDisabled(False)
+        # reset combox
+        self.combobox.setCurrentIndex(0)
+        self.label_4.setText('R')
+        self.label_5.setText('G')
+        self.label_6.setText('B')
 
 def closeWindow(self):
     pass
@@ -359,6 +364,12 @@ class Ui_Lab1_Window(object):
         self.menubar.addAction(self.menuAdd.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
+        # edit start
+        self.combobox = QtWidgets.QComboBox(self.partie2)
+        self.combobox.addItems(['RGB', 'CMYK', 'HSV', 'Lab'])
+        self.combobox.setObjectName("combobox")
+        #edit end
+
         #valeurs initiales r, g et b pour l'affichage des formes : (255, 0, 0)
 
         self.actionDis.setDisabled(False)
@@ -371,10 +382,56 @@ class Ui_Lab1_Window(object):
         self.pushButton_9.clicked.connect(self.openWindowInterpolation)
         self.tabWidget.blockSignals(False)  # now listen the currentChanged signal
 
+        #comboBox disabled until an image is displayed
+        self.combobox.setDisabled(True)
+        self.combobox.activated.connect(self.activated)
+
         self.retranslateUi(Lab1_Window)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Lab1_Window)
 
+   def activated(self, index):
+        # change the display if combobox is activated
+        if index == 3:
+            self.label_4.setText('L')
+            self.label_5.setText('a')
+            self.label_6.setText('b')
+            pixmap = QPixmap('lightness_img.jpg')
+            self.label_7.setPixmap(pixmap)
+            pixmap = QPixmap('red_green_img.jpg')
+            self.label_8.setPixmap(pixmap)
+            pixmap = QPixmap('blue_yellow_img.jpg')
+            self.label_9.setPixmap(pixmap)
+        elif index == 2:
+            self.label_4.setText('H')
+            self.label_5.setText('S')
+            self.label_6.setText('V')
+            pixmap = QPixmap('hue_img.jpg')
+            self.label_7.setPixmap(pixmap)
+            pixmap = QPixmap('saturation_img.jpg')
+            self.label_8.setPixmap(pixmap)
+            pixmap = QPixmap('value_img.jpg')
+            self.label_9.setPixmap(pixmap)
+        elif index == 1:
+            self.label_4.setText('C')
+            self.label_5.setText('M')
+            self.label_6.setText('Y')
+            pixmap = QPixmap('cyan_channel.jpg')
+            self.label_7.setPixmap(pixmap)
+            pixmap = QPixmap('m_channel.jpg')
+            self.label_8.setPixmap(pixmap)
+            pixmap = QPixmap('y_channel.jpg')
+            self.label_9.setPixmap(pixmap)
+        else:
+            self.label_4.setText('R')
+            self.label_5.setText('G')
+            self.label_6.setText('B')
+            pixmap = QPixmap('red_img.jpg')
+            self.label_7.setPixmap(pixmap)
+            pixmap = QPixmap('green_img.jpg')
+            self.label_8.setPixmap(pixmap)
+            pixmap = QPixmap('blue_img.jpg')
+            self.label_9.setPixmap(pixmap)
 
    def changeFormColor(self, r, g, b, boolbutton):
         if boolbutton:
