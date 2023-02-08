@@ -7,12 +7,11 @@
 # WARNING! All changes made in this file will be lost!
 import cv2
 import numpy as np
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSignal, QThread
 
 
 class Ui_Lab1_Interpolation(QThread):
-
     R = 255
     G = 0
     B = 0
@@ -492,6 +491,19 @@ class Ui_Lab1_Interpolation(QThread):
             self.Y = self.Y_Slider.value()
             self.K = self.K_Slider.value()
             self.my_signal_2.emit(self.C, self.M, self.Y, self.K, self.okClicked)
+        # HSV tab
+        if self.tabWidget.currentIndex() == 2:
+            self.H = self.H_Slider.value()
+            self.S = self.S_Slider.value()
+            self.V = self.V_Slider.value()
+            self.my_signal_3.emit(self.H, self.S, self.V, self.okClicked)
+
+        # LAB tab
+        if self.tabWidget.currentIndex() == 3:
+            self.L = self.L_Slider.value()
+            self.a = self.a_Slider.value()
+            self.b = self.b_Slider.value()
+            self.my_signal_4.emit(self.L, self.a, self.b, self.okClicked)
 
     def retranslateUi(self, Lab1_Interpolation):
         _translate = QtCore.QCoreApplication.translate

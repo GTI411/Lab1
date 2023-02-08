@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import math
 
 # Form implementation generated from reading ui file 'Lab1_Window.ui'
 #
@@ -151,6 +152,14 @@ class Ui_Lab1_Window(object):
     M = 0
     Y = 0
     K = 0
+
+    H = 0
+    S = 0
+    V = 0
+
+    L = 0
+    A = 0
+    B = 0
     whichForm = False  # false : disc est affiché, true : rectangle est affiché
 
     def openWindowInterpolation(self):
@@ -451,7 +460,7 @@ class Ui_Lab1_Window(object):
                 addDisc(self)
         self.window.close()
 
-    def RGB_2_CMYK(self):
+   def RGB_2_CMYK(self):
         # Convert RGB to values between 0 and 1
         R2 = self.R / 255
         G2 = self.G / 255
@@ -496,6 +505,141 @@ class Ui_Lab1_Window(object):
         self.R = round(float(255 * float(1 - C2) * float(1 - K2)))
         self.G = round(float(255 * float(1 - M2) * float(1 - K2)))
         self.B = round(float(255 * float(1 - Y2) * float(1 - K2)))
+
+    def changeFormColorCMYK(self, c, m, y, k, boolbutton):
+        if boolbutton:
+                self.C = c
+                self.M = m
+                self.Y = y
+                self.K = k
+                self.updateCMYKtoRGB()
+                self.updateRGBtoHSV()
+                self.updateRGBtoLab()
+                if self.whichForm:
+                    addRectangle(self)
+                else
+                    addDisc(self)
+
+            self.window.close()
+
+    def changeFormColorHSV(self, h, s, v, boolbutton):
+            if boolbutton:
+                self.H = h
+                self.S = s
+                self.V = v
+                self.updateHSVtoRGB()
+                self.updateRGBtoCMYK()
+                self.updateRGBtoLab()
+                if self.whichForm:
+                    addRectangle(self)
+                else:
+                    addDisc(self)
+
+            self.window.close()
+
+    def changeFormColorLAB(self, l, a, b, boolbutton):
+            if boolbutton:
+                self.L = l
+                self.a = a
+                self.b = b
+                self.updateLabtoRGB()
+                self.updateRGBtoCMYK()
+                self.updateRGBtoHSV()
+                if self.whichForm:
+                    addRectangle(self)
+                else:
+                    addDisc(self)
+                self.window.close()
+    def updateRGBtoHSV(self):
+            red = self.R / 255.0
+            green = self.G / 255.0
+            blue = self.B / 255.0
+            hue: float = 0
+            if self.R == self.G == self.B:
+                self.H = 0
+                self.S = 0
+                self.V = 0
+            else:
+                if red == 0 and green == 0 and blue == 0:
+                    self.H = 0
+                    self.S = 0
+                    self.V = 0
+                else:
+                    maximum_rgb = max(red, green, blue)
+                    minimum_rgb = min(red, green, blue)
+                    diff = maximum_rgb - minimum_rgb
+
+                    if maximum_rgb == red:
+                        hue = ((green - blue) / diff) % 6
+                    elif maximum_rgb == green:
+                        hue = ((blue - red) / diff) + 2
+                    elif maximum_rgb == blue:
+                        hue = ((red - green) / diff) + 4
+
+                    self.H = round(hue * 60)
+                    self.V = round(maximum_rgb * 100)
+                    if maximum_rgb == 0:
+                        self.S = 0
+                    else:
+                        self.S = round((diff / maximum_rgb) * 100)
+
+    def updateHSVtoRGB(self):
+            saturation = self.S / 100
+            value = self.V / 100
+            c_val = saturation * value
+            x_val = c_val * (1 - abs(math.fmod(self.H / 60, 2) - 1))
+            m_val = value - c_val
+            red: float = 0
+            green: float = 0
+            blue: float = 0
+            if 0 <= self.H < 60:
+                red = c_val
+                green = x_val
+                blue = 0
+            elif 60 <= self.H < 120:
+                red = x_val
+                green = c_val
+                blue = 0
+            elif 120 <= self.H < 180:
+                red = 0
+                green = c_val
+                blue = x_val
+            elif 180 <= self.H < 240:
+                red = 0
+                green = x_val
+                blue = c_val
+            elif 240 <= self.H < 300:
+                red = x_val
+                green = 0
+                blue = c_val
+            elif 300 <= self.H < 360:
+                red = c_val
+                green = 0
+                blue = x_val
+            self.R = round((red + m_val) * 255)
+            self.G = round((green + m_val) * 255)
+            self.B = round((blue + m_val) * 255)
+
+        def updateLabtoRGB(self):
+            # transform L a b values to 0-255 range
+            new_L = round(self.L * 255 / 100)
+            new_a = self.a + 128
+            new_b = self.b + 128
+            array = np.zeros([1, 1, 3], dtype=np.uint8)
+            array[:, :] = [new_L, new_a, new_b]
+            rgb = cv2.cvtColor(array, cv2.COLOR_Lab2RGB)
+            self.R = int(rgb[0][0][0])
+            self.G = int(rgb[0][0][1])
+            self.B = int(rgb[0][0][2])
+
+        def updateRGBtoLab(self):
+            array = np.zeros([1, 1, 3], dtype=np.uint8)
+            array[:, :] = [self.R, self.G, self.B]
+            lab = cv2.cvtColor(array, cv2.COLOR_RGB2Lab)
+            # transform L to [0,100], a and b to [-128,127] range
+            self.L = round(lab[0][0][0] * 100 / 255)
+            self.a = lab[0][0][1] - 128
+            self.b = lab[0][0][2] - 128
 
     def onChange(self, i):  # changed!
         if self.tabWidget.currentIndex() == 1:
