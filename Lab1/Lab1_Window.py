@@ -10,7 +10,7 @@ from PIL import Image
 from PyQt5.QtGui import QPixmap
 import cv2
 import numpy as np
-from PyQt5.QtWidgets import QFileDialog, QComboBox
+from PyQt5.QtWidgets import QFileDialog
 
 from Lab1.Lab1_Interpolation import Ui_Lab1_Interpolation
 
@@ -143,11 +143,17 @@ def closeWindow(self):
     pass
 
 class Ui_Lab1_Window(object):
-   R = 255
-   G = 0
-   B = 0
-   whichForm = False  # false : disc est affiché, true : rectangle est affiché
-   def openWindowInterpolation(self):
+    R = 0
+    G = 0
+    B = 20
+
+    C = 0
+    M = 0
+    Y = 0
+    K = 0
+    whichForm = False  # false : disc est affiché, true : rectangle est affiché
+
+    def openWindowInterpolation(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_Lab1_Interpolation()
         self.ui.my_signal.connect(self.changeFormColor) #récupérer les valeurs R G B de l'autre fenêtre
@@ -438,21 +444,68 @@ class Ui_Lab1_Window(object):
             self.R = r
             self.G = g
             self.B = b
-            if self.whichForm :
+            self.RGB_2_CMYK()
+            if self.whichForm:
                 addRectangle(self)
-            else :
+            else:
                 addDisc(self)
         self.window.close()
 
-   def onChange(self, i):  # changed!
-       if (self.tabWidget.currentIndex() == 1):
-           self.actionDis.setDisabled(True)
-           self.actionRectangle.setDisabled(True)
-           self.actionImage.setDisabled(False)
-       if (self.tabWidget.currentIndex() == 0):
-           self.actionDis.setDisabled(False)
-           self.actionRectangle.setDisabled(False)
-           self.actionImage.setDisabled(True)
+    def RGB_2_CMYK(self):
+        # Convert RGB to values between 0 and 1
+        R2 = self.R / 255
+        G2 = self.G / 255
+        B2 = self.B / 255
+
+        if self.R == 0 and self.G == 0 and self.B == 0:
+            self.C = 0
+            self.M = 0
+            self.Y = 0
+            self.K = 100
+        elif self.R == self.G == self.B:
+            self.K = 1 - R2
+        else:
+            self.K = 1 - max(R2, G2, B2)
+
+            self.C = round(float(1 - R2 - self.K) / float(1 - self.K) * 100)
+            self.M = round(float(1 - G2 - self.K) / float(1 - self.K) * 100)
+            self.Y = round(float(1 - B2 - self.K) / float(1 - self.K) * 100)
+            self.K = round(self.K * 100)
+
+    def changeFormColorCMYK(self, c, m, y, k, boolbutton):
+        if boolbutton:
+            self.C = c
+            self.M = m
+            self.Y = y
+            self.K = k
+            self.updateCMYKtoRGB()
+            if self.whichForm:
+                addRectangle(self)
+            else:
+                addDisc(self)
+        self.window.close()
+
+    def updateCMYKtoRGB(self):
+        # Convert CMYK to values between 0 and 1
+        C2 = self.C / 100
+        M2 = self.M / 100
+        Y2 = self.Y / 100
+        K2 = self.K / 100
+
+        # Calculs
+        self.R = round(float(255 * float(1 - C2) * float(1 - K2)))
+        self.G = round(float(255 * float(1 - M2) * float(1 - K2)))
+        self.B = round(float(255 * float(1 - Y2) * float(1 - K2)))
+
+    def onChange(self, i):  # changed!
+        if self.tabWidget.currentIndex() == 1:
+            self.actionDis.setDisabled(True)
+            self.actionRectangle.setDisabled(True)
+            self.actionImage.setDisabled(False)
+        if self.tabWidget.currentIndex() == 0:
+            self.actionDis.setDisabled(False)
+            self.actionRectangle.setDisabled(False)
+            self.actionImage.setDisabled(True)
 
    def retranslateUi(self, Lab1_Window):
         _translate = QtCore.QCoreApplication.translate
