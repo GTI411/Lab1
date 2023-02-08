@@ -325,17 +325,37 @@ class Ui_Lab1_Window(object):
         QtCore.QMetaObject.connectSlotsByName(Lab1_Window)
 
 
-   def changeFormColor(self, r, g, b, boolbutton):
-        if boolbutton:
-            self.R = r
-            self.G = g
-            self.B = b
-            if self.whichForm :
-                addRectangle(self)
-            else :
-                addDisc(self)
-        self.window.close()
+    def RGB_to_HSV(self):
 
+        red_prime = self.R / 255.0
+        green_prime = self.G / 255.0
+        blue_prime = self.B / 255.0
+
+        tab_color_HSV = [0, 0, 0]
+
+        cMax = max(red_prime, green_prime, blue_prime)
+        cMin = min(red_prime, green_prime, blue_prime)
+
+        alpha = cMax - cMin
+
+        # teinte
+        if alpha == 0:
+            tab_color_HSV[0] = 0
+        if cMax == red_prime:
+            tab_color_HSV[0] = 60 * ((green_prime - blue_prime) / alpha) % 6
+        if cMax == green_prime:
+            tab_color_HSV[0] = 60 * (((blue_prime - red_prime) / alpha) + 2)
+        if cMax == blue_prime:
+             tab_color_HSV[0] = 60 * (((red_prime - green_prime) / alpha) + 4)
+
+        # saturation
+        if cMax == 0:
+              tab_color_HSV[1] = 0
+        else:
+             tab_color_HSV[1] = alpha / cMax
+
+        # value
+        tab_color_HSV[2] = cMax
    def onChange(self, i):  # changed!
        if (self.tabWidget.currentIndex() == 1):
            self.actionDis.setDisabled(True)
